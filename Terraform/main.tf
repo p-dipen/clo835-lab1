@@ -6,7 +6,7 @@ terraform {
       version = "~> 3.27"
     }
   }
-  required_version = "~> 1.1.5" # 1.1.5 or above and below 1.2.0
+  required_version = "~> 1.2.1" # 1.1.5 or above and below 1.2.0
 }
 
 provider "aws" {
@@ -15,7 +15,7 @@ provider "aws" {
 }
 
 data "aws_availability_zones" "available" {
-state = "available"
+  state = "available"
 }
 
 data "aws_ami" "ami-amzn2" {
@@ -48,7 +48,7 @@ module "gloabl_vars" {
 resource "aws_key_pair" "linux_key" {
   key_name   = "linux_key"
   public_key = file(var.path_to_linux_key)
-    tags = merge({
+  tags = merge({
     Name = "${local.name_prefix}-keypair"
     },
     local.default_tags
@@ -81,7 +81,7 @@ module "vm_sg" {
       key         = "HTTP"
       type        = "ingress"
       from_port   = 80
-      to_port     = 80
+      to_port     = 81
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
       self        = null
@@ -90,7 +90,7 @@ module "vm_sg" {
   ]
 
   vpc_id = data.aws_vpc.default.id
-    tags = merge({
+  tags = merge({
     Name = "${local.name_prefix}-LinuxServer-sg"
     },
     local.default_tags
@@ -103,7 +103,7 @@ resource "aws_instance" "linux_vm" {
   ami                    = data.aws_ami.ami-amzn2.id
   key_name               = aws_key_pair.linux_key.key_name
   instance_type          = var.vm_instance_type
-  availability_zone = data.aws_availability_zones.available.names[count.index]
+  availability_zone      = data.aws_availability_zones.available.names[count.index]
   vpc_security_group_ids = [module.vm_sg.id]
   tags = merge({
     Name = "${local.name_prefix}-LinuxServer-${count.index}"
