@@ -112,5 +112,12 @@ resource "aws_instance" "linux_vm" {
   )
 }
 
+resource "aws_ecr_repository" "cats" {
+  name = "cats" # Naming my repository
+}
+
+resource "aws_ecr_repository" "dogs" {
+  name = "dogs" # Naming my repository
+}
 
 
