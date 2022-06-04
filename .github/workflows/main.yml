@@ -42,7 +42,7 @@ jobs:
           ECR_REPOSITORY: cats
           IMAGE_TAG: latest
         run: |
-          cd cats
+          cd DockerImages/cats/
           ls -ltra
           # Dokcer build
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -60,7 +60,7 @@ jobs:
           ECR_REPOSITORY: dogs
           IMAGE_TAG: latest
         run: |
-          cd cats
+          cd DockerImages/cats/
           ls -ltra
           # Dokcer build
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
