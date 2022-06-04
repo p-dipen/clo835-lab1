@@ -80,8 +80,8 @@ module "vm_sg" {
     {
       key         = "HTTP"
       type        = "ingress"
-      from_port   = 80
-      to_port     = 81
+      from_port   = 8080
+      to_port     = 8081
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
       self        = null
@@ -104,6 +104,7 @@ resource "aws_instance" "linux_vm" {
   key_name               = aws_key_pair.linux_key.key_name
   instance_type          = var.vm_instance_type
   availability_zone      = data.aws_availability_zones.available.names[count.index]
+  user_data              = file("docker_install.sh")
   vpc_security_group_ids = [module.vm_sg.id]
   tags = merge({
     Name = "${local.name_prefix}-LinuxServer-${count.index}"
@@ -112,6 +113,7 @@ resource "aws_instance" "linux_vm" {
   )
 }
 
+
 resource "aws_ecr_repository" "cats" {
   name = "cats" # Naming my repository
 }
@@ -119,5 +121,4 @@ resource "aws_ecr_repository" "cats" {
 resource "aws_ecr_repository" "dogs" {
   name = "dogs" # Naming my repository
 }
-
 
