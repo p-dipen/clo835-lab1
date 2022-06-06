@@ -6,6 +6,7 @@ terraform {
       version = "~> 3.27"
     }
   }
+  # require version
   required_version = "~> 1.2.1" # 1.1.5 or above and below 1.2.0
 }
 
