@@ -105,6 +105,7 @@ resource "aws_instance" "linux_vm" {
   instance_type          = var.vm_instance_type
   availability_zone      = data.aws_availability_zones.available.names[count.index]
   user_data              = file("docker_install.sh")
+  iam_instance_profile   = data.aws_iam_instance_profile.ec2_access_porfile.name
   vpc_security_group_ids = [module.vm_sg.id]
   tags = merge({
     Name = "${local.name_prefix}-LinuxServer-${count.index}"
@@ -122,3 +123,29 @@ resource "aws_ecr_repository" "dogs" {
   name = "dogs" # Naming my repository
 }
 
+# resource "aws_iam_role" "role" {
+#   name               = "${local.name_prefix}-role"
+#   assume_role_policy = <<EOF
+# {
+#   "Version": "2008-10-17",
+#   "Statement": [
+#     {
+#       "Action": "sts:AssumeRole",
+#       "Principal": {
+#         "Service": ["ec2.amazonaws.com"]
+#       },
+#       "Effect": "Allow"
+#     }
+#   ]
+# }
+# EOF
+# }
+
+
+data "aws_iam_instance_profile" "ec2_access_porfile" {
+  name = "LabInstanceProfile"
+}
+
+# resource "aws_iam_instance_profile" "profile" {
+#   role = aws_iam_role.role.name
+# }
