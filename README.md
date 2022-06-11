@@ -12,7 +12,7 @@ This is the example of creating a simple infrastructure using Terraform. It cons
 
 ## How to create the infrastructure?
 This example implies that you have already AWS account and Terraform CLI installed.
-1. `git clone https://github.com/p-dipen/clo835-lab1.git`
+1. `git clone https://github.com/p-dipen/docker-ecr-ec2.git`
 2. cd Terraform
 3. terraform init
 4. terraform plan
